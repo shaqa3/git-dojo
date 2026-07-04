@@ -2,6 +2,8 @@
 
 **▶ Play it live: https://shaqa3.github.io/git-dojo/**
 
+[![Git Dojo — guided Git katas with a live commit graph and practice terminal](assets/screenshot.png)](https://shaqa3.github.io/git-dojo/)
+
 An interactive, **fully offline** trainer for learning Git by doing. Practice real
 commands in a simulated terminal, watch a live commit graph react, and progress
 through 15 guided katas — then race the clock in the speedrun sandbox.
