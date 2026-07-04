@@ -1,5 +1,6 @@
 # 🥋 Git Dojo
 
+[![CI](https://github.com/shaqa3/git-dojo/actions/workflows/ci.yml/badge.svg)](https://github.com/shaqa3/git-dojo/actions/workflows/ci.yml)
 [![Topics](https://img.shields.io/badge/topics-git%20%C2%B7%20learning%20%C2%B7%20interactive-ef7346?style=flat-square)](https://github.com/shaqa3/git-dojo)
 [![License: MIT](https://img.shields.io/badge/license-MIT-ef7346?style=flat-square)](LICENSE)
 
