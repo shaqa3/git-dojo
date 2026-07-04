@@ -1,5 +1,8 @@
 # 🥋 Git Dojo
 
+[![Topics](https://img.shields.io/badge/topics-git%20%C2%B7%20learning%20%C2%B7%20interactive-ef7346?style=flat-square)](https://github.com/shaqa3/git-dojo)
+[![License: MIT](https://img.shields.io/badge/license-MIT-ef7346?style=flat-square)](LICENSE)
+
 **▶ Play it live: https://shaqa3.github.io/git-dojo/**
 
 [![Git Dojo — a Fork & Merge speedrun: typing git commands while the commit graph builds live](assets/demo.gif)](https://shaqa3.github.io/git-dojo/)
