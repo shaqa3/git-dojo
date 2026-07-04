@@ -2,7 +2,9 @@
 
 **▶ Play it live: https://shaqa3.github.io/git-dojo/**
 
-[![Git Dojo — guided Git katas with a live commit graph and practice terminal](assets/screenshot.png)](https://shaqa3.github.io/git-dojo/)
+[![Git Dojo — a Fork & Merge speedrun: typing git commands while the commit graph builds live](assets/demo.gif)](https://shaqa3.github.io/git-dojo/)
+
+<sub>▲ A “Fork & Merge” speedrun, solved live — typed commands, a reacting commit graph, and the timer stopping on success.</sub>
 
 An interactive, **fully offline** trainer for learning Git by doing. Practice real
 commands in a simulated terminal, watch a live commit graph react, and progress
