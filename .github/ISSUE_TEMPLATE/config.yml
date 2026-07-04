@@ -1,0 +1,8 @@
+blank_issues_enabled: false
+contact_links:
+  - name: 🥋 Try Git Dojo
+    url: https://shaqa3.github.io/git-dojo/
+    about: Play the live app before filing — it might already do what you need.
+  - name: 📖 Contributing guide
+    url: https://github.com/shaqa3/git-dojo/blob/main/CONTRIBUTING.md
+    about: How to add a kata, challenge, or command, and how to open a PR.

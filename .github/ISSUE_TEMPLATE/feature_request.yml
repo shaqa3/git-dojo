@@ -1,0 +1,44 @@
+name: 💡 Idea / feature request
+description: Suggest a new kata, speedrun challenge, git command, or improvement
+title: "[Idea]: "
+labels: ["enhancement"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Have an idea to make Git Dojo better? New katas, speedrun challenges,
+        simulated commands, and UX improvements are all welcome.
+  - type: dropdown
+    id: kind
+    attributes:
+      label: What kind of idea is this?
+      options:
+        - New kata (guided lesson)
+        - New speedrun challenge
+        - New simulated git command
+        - UI / UX improvement
+        - Other
+    validations:
+      required: true
+  - type: textarea
+    id: idea
+    attributes:
+      label: The idea
+      description: What should it do, and what would a learner get out of it?
+      placeholder: "Add a kata for `git bisect` that walks through finding a bad commit…"
+    validations:
+      required: true
+  - type: textarea
+    id: motivation
+    attributes:
+      label: Why is it useful?
+      description: What problem does it solve, or which git skill does it teach?
+    validations:
+      required: false
+  - type: checkboxes
+    id: contribute
+    attributes:
+      label: Contribution
+      options:
+        - label: I'd be willing to open a PR for this (see CONTRIBUTING.md)
+          required: false
