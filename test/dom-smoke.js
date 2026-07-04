@@ -67,7 +67,7 @@ ctx.globalThis = ctx; ctx.self = ctx;
 vm.createContext(ctx);
 
 let bundle = fs.readFileSync(require('path').join(__dirname,'..','dist','_bundle.js'), 'utf8');
-bundle += '\n;globalThis.__api={loadKata:loadKata, runLine:runLine, openRebase:openRebase, startRebase:startRebase, KATAS:KATAS, CHALLENGES:CHALLENGES, startSpeedrun:startSpeedrun, exitSpeedrun:exitSpeedrun, openEditor:openEditor, saveEditor:saveEditor, get repo(){return repo;}, get stepIndex(){return stepIndex;}, get speedrun(){return speedrun;}, get rebaseState(){return rebaseState;}, setChallenge(v){challengeMode=v;}};';
+bundle += '\n;globalThis.__api={loadKata:loadKata, runLine:runLine, openRebase:openRebase, startRebase:startRebase, KATAS:KATAS, CHALLENGES:CHALLENGES, startSpeedrun:startSpeedrun, exitSpeedrun:exitSpeedrun, openEditor:openEditor, saveEditor:saveEditor, get repo(){return repo;}, get stepIndex(){return stepIndex;}, get speedrun(){return speedrun;}, get rebaseState(){return rebaseState;}, setChallenge(v){challengeMode=v;}, openWelcome:openWelcome, closeWelcome:closeWelcome, seenWelcome:seenWelcome};';
 
 let errors = 0;
 try {
@@ -76,6 +76,22 @@ try {
 } catch (e) { errors++; console.log('✗ boot threw:', e.stack.split('\n').slice(0,3).join('\n')); }
 
 const api = ctx.__api;
+
+// welcome overlay: first-time visitor sees it (boot ran with empty localStorage),
+// dismissing persists the flag, and the ? button reopens it.
+try {
+  const mask = registry['#welcomeMask'];
+  if (!mask || !mask.classList.contains('show')) throw new Error('welcome not shown to first-time visitor at boot');
+  if (api.seenWelcome()) throw new Error('should not be marked seen before dismissal');
+  api.closeWelcome();
+  if (mask.classList.contains('show')) throw new Error('welcome did not close on dismiss');
+  if (!api.seenWelcome() || store['git-dojo-seen-welcome'] !== '1') throw new Error('dismissal did not persist the seen flag');
+  api.openWelcome();
+  if (!mask.classList.contains('show')) throw new Error('? button did not reopen welcome');
+  api.closeWelcome();
+  console.log('✓ welcome overlay: first-time show, dismiss persists, reopen ok');
+} catch (e) { errors++; console.log('✗ welcome overlay threw:', e.stack.split('\n').slice(0,3).join('\n')); }
+
 // load every kata
 for (let i = 0; i < api.KATAS.length; i++) {
   try { api.loadKata(i); }

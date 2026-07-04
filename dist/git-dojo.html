@@ -246,6 +246,28 @@
     align-items:center; justify-content:center; padding:24px}
   .editor-mask.show{display:flex; animation:fade .18s}
   @keyframes fade{from{opacity:0}}
+
+  /* welcome / onboarding */
+  .welcome{background:var(--panel); border:1px solid var(--line); border-radius:14px; width:min(540px,100%);
+    box-shadow:var(--shadow); overflow:hidden; padding:24px 24px 20px; animation:pop .32s cubic-bezier(.34,1.4,.64,1)}
+  .welcome-head{display:flex; gap:15px; align-items:flex-start}
+  .welcome-head .glyph{width:44px; height:44px; border-radius:11px; flex:none}
+  .welcome-head h2{font-family:var(--mono); font-size:20px; font-weight:600; letter-spacing:-.4px; margin:2px 0 0}
+  .welcome-head .wm-brand{color:var(--accent)}
+  .welcome-sub{color:var(--muted); font-size:13.5px; line-height:1.55; margin:7px 0 0}
+  .welcome-steps{list-style:none; margin:20px 0 0; padding:0; display:flex; flex-direction:column; gap:13px}
+  .welcome-steps li{display:flex; gap:12px; align-items:flex-start; font-size:13.5px; line-height:1.5}
+  .welcome-steps .ws-n{flex:none; width:24px; height:24px; border-radius:50%; display:grid; place-items:center;
+    font-family:var(--mono); font-size:12px; font-weight:600; color:var(--accent);
+    background:var(--accent-soft); box-shadow:inset 0 0 0 1px color-mix(in srgb,var(--accent) 30%, transparent)}
+  .welcome-steps b{font-weight:600}
+  .welcome-steps .kbd{font-family:var(--mono); font-size:11.5px; background:var(--term-bg); color:var(--term-accent);
+    padding:1px 6px; border-radius:5px; border:1px solid var(--term-line); white-space:nowrap}
+  .welcome-foot{display:flex; align-items:center; justify-content:space-between; gap:14px; flex-wrap:wrap;
+    margin-top:22px; padding-top:16px; border-top:1px solid var(--line-2)}
+  .welcome-tip{font-size:11.5px; color:var(--muted); font-family:var(--mono)}
+  .welcome-tip b{color:var(--ink)}
+  .welcome-actions{display:flex; gap:9px; margin-left:auto}
   .editor{background:var(--panel); border:1px solid var(--line); border-radius:12px; width:min(560px,100%);
     box-shadow:var(--shadow); overflow:hidden}
   .editor .eh{display:flex; align-items:center; gap:10px; padding:12px 15px; border-bottom:1px solid var(--line-2)}
@@ -370,6 +392,7 @@
       <div class="pbar"><i id="progressBar" style="width:0%"></i></div>
     </div>
     <button class="btn menu-btn" id="menuBtn" title="Toggle kata list">☰</button>
+    <button class="btn" id="helpBtn" title="How Git Dojo works">?</button>
     <button class="btn" id="challengeBtn" title="Hide the command hints and test yourself">🥷 Challenge: off</button>
     <button class="btn" id="restartBtn" title="Restart this kata">↺ Restart</button>
   </header>
@@ -438,6 +461,30 @@
     <div class="conflict-hint" id="edConflict" style="display:none">This file has conflict markers. Remove &lt;&lt;&lt;, ===, &gt;&gt;&gt; and keep the content you want.</div>
     <textarea id="edArea" spellcheck="false"></textarea>
     <div class="ef"><button class="btn" id="edCancel">Cancel</button><button class="btn primary" id="edSave">Save changes</button></div>
+  </div>
+</div>
+
+<div class="editor-mask" id="welcomeMask">
+  <div class="welcome" role="dialog" aria-modal="true" aria-labelledby="welcomeTitle">
+    <div class="welcome-head">
+      <div class="glyph" aria-hidden="true"></div>
+      <div>
+        <h2 id="welcomeTitle">Welcome to <span class="wm-brand">git dojo</span></h2>
+        <p class="welcome-sub">Practice real Git in a safe, simulated terminal — nothing here touches a real repo, and it all runs offline in your browser.</p>
+      </div>
+    </div>
+    <ol class="welcome-steps">
+      <li><span class="ws-n">1</span><div><b>Type real Git commands</b> in the terminal — or hit <span class="kbd">Show me how</span> on any step for the exact command.</div></li>
+      <li><span class="ws-n">2</span><div><b>Watch it react live.</b> The commit graph, staging area, and files update as you go.</div></li>
+      <li><span class="ws-n">3</span><div><b>Earn your belts.</b> Work through 15 guided katas from your first commit to rebasing and conflicts — then race the clock in the <b>Speedrun sandbox</b>.</div></li>
+    </ol>
+    <div class="welcome-foot">
+      <span class="welcome-tip">Reopen this anytime with the <b>?</b> button.</span>
+      <div class="welcome-actions">
+        <button class="btn" id="welcomeExplore">Explore freely</button>
+        <button class="btn primary" id="welcomeStart">Start practicing →</button>
+      </div>
+    </div>
   </div>
 </div>
 
@@ -2249,6 +2296,17 @@ function wireInput(input){
   });
 }
 
+/* ---------------- welcome / onboarding ---------------- */
+function seenWelcome(){ try{ return localStorage.getItem('git-dojo-seen-welcome')==='1'; }catch(e){ return false; } }
+function markWelcomeSeen(){ try{ localStorage.setItem('git-dojo-seen-welcome','1'); }catch(e){} }
+function openWelcome(){ $('#welcomeMask').classList.add('show'); }
+function closeWelcome(){ $('#welcomeMask').classList.remove('show'); markWelcomeSeen(); const i=$('#termInput'); if(i) i.focus(); }
+$('#helpBtn').onclick=openWelcome;
+$('#welcomeStart').onclick=closeWelcome;
+$('#welcomeExplore').onclick=()=>{ markWelcomeSeen(); $('#welcomeMask').classList.remove('show'); const s=KATAS.findIndex(k=>k.sandbox); if(s>=0) loadKata(s); };
+$('#welcomeMask').onclick=e=>{ if(e.target===$('#welcomeMask')) closeWelcome(); };
+document.addEventListener('keydown',e=>{ if(e.key==='Escape' && $('#welcomeMask').classList.contains('show')) closeWelcome(); });
+
 /* ---------------- global controls ---------------- */
 $('#nextBtn').onclick=()=>{ const n=nextRealIndex(); if(n>=0) loadKata(n); };
 $('#restartBtn').onclick=()=>{ doneAnimated[current]=false; loadKata(current); };
@@ -2283,4 +2341,6 @@ $('#terminal').addEventListener('click',()=>{ const i=$('#termInput'); if(i) i.f
 const firstUnfinished = KATAS.findIndex(k=>!k.sandbox && !progress[k.title]);
 loadKata(firstUnfinished===-1?0:firstUnfinished);
 renderProgressBar();
+// first-time visitors get a one-time welcome overlay (reopenable via the ? button)
+if(!seenWelcome()) openWelcome();
 </script>
