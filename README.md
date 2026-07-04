@@ -81,41 +81,14 @@ lifecycle. All four must pass before shipping.
 
 ## Contributing
 
-Contributions are welcome — bug fixes, new katas, new speedrun challenges, or new
-simulated commands. The project is intentionally **dependency-free**: no runtime
-libraries, no build framework, just Node for the tests and `build.js`.
+Contributions are welcome — bug fixes, new katas, new speedrun challenges, and
+new simulated commands. The project is intentionally **dependency-free**: edit
+`src/`, run `npm test` (it must stay green), and never hand-edit the generated
+`dist/git-dojo.html`.
 
-**Ground rules**
-
-- Never hand-edit `dist/git-dojo.html` — it's generated. Change `src/` and run
-  `npm run build`.
-- `npm test` must pass before you open a PR. If you change the engine or add a
-  kata/challenge, add or update a test that covers it.
-- Match the surrounding style: small functions, no dependencies, and keep the
-  single-file, offline-first design intact (no network calls at runtime).
-
-**Common changes**
-
-- **Add a git command** — implement `cmd_<name>` in `src/git-engine.js`, register
-  it in the dispatcher table, and cover it in `test/advanced.test.js`.
-- **Add a kata** — append an entry to the `KATAS` array in `src/ui.html` with a
-  `setup(repo)` and an array of `steps`, each having a `check(repo)` predicate.
-  `test/kata-sim.js` will verify it is completable from its own hints.
-- **Add a speedrun challenge** — append to the `CHALLENGES` array in `src/ui.html`
-  with a `goal(repo)` predicate; the DOM smoke test confirms it's solvable.
-
-**Workflow**
-
-```bash
-git switch -c my-change
-# edit src/…, then:
-npm test           # build + all suites must be green
-git commit -am "Describe your change"
-# open a pull request against main
-```
-
-Bug reports and ideas are equally welcome — please
-[open an issue](https://github.com/shaqa3/git-dojo/issues).
+See **[CONTRIBUTING.md](CONTRIBUTING.md)** for the full guide — dev setup, how to
+add a command / kata / challenge, the test suite, and the PR workflow. Bug
+reports and ideas are welcome via [issues](https://github.com/shaqa3/git-dojo/issues).
 
 ## License
 
